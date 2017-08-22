@@ -51,6 +51,32 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.button_Right_Parenthesis).setOnClickListener(buttonNumberListener);
             findViewById(R.id.button_Left_Parenthesis).setOnClickListener(buttonNumberListener);
 
+            findViewById(R.id.button_v).setOnClickListener(new View.OnClickListener() {
+                   @Override
+                    public void onClick(View view){
+                       try {
+                           cmd[2]="--batch-string=display2d:false;float("+tv.getText().toString()+");";
+                           ProcessBuilder builder = new ProcessBuilder("/system/bin/chmod","744",cmd[0]);
+                           Process maxpro = builder.start();
+                           maxpro.waitFor();
+                           builder=new ProcessBuilder(cmd);
+                           maxpro=builder.start();
+                           maxpro.waitFor();
+                           BufferedReader br = new BufferedReader(new InputStreamReader(maxpro.getInputStream()));
+                           String line="";
+                           for (int i = 0; i < 4; i++) {
+                               line = br.readLine();
+                               Log.d("maxima",line);
+                           }
+                           tv.setText(line.trim());
+                           br.close();
+                       } catch (IOException | InterruptedException e) {
+                           tv.setText("Error");
+                       }
+                   }
+            }
+            );
+
             findViewById(R.id.button_c).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
