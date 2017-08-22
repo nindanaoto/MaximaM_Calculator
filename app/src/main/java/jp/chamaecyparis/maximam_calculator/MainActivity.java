@@ -1,6 +1,7 @@
 package jp.chamaecyparis.maximam_calculator;
 
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Context;
@@ -15,12 +16,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 
 public class MainActivity extends AppCompatActivity {
     TextView tv;
     EditText et;
-    final String[] cmd = {"/data/data/jp.chamaecyparis.maximam_calculator/files/maxima.x86.pie","--very-quiet",""};
+    final String[] cmd = {"","--very-quiet",""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             tv = (TextView) findViewById(R.id.textView);
             et = (EditText) findViewById(R.id.editText);
-            copy2Local("maxima.x86.pie");
+            copy2Local();
             tv.setText("Show result here.");
             et.setText("Type formula here.");
 
@@ -77,20 +80,36 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {tv.setText("Error;");}
     }
 
-    private void copy2Local(String fileName) {
+    private void copy2Local() {
         // assetsから読み込み、出力する
+        String fileName="";
+        if(Build.CPU_ABI.equals("x86")||Build.CPU_ABI.equals("x86_64")){
+            fileName="maxima.x86.pie";
+        }else{
+            fileName="maxima.pie";
+        }
+        Log.d("copy",Build.CPU_ABI);
+        Log.d("copy",fileName);
+        cmd[0]=getFilesDir().toString()+"/"+fileName;
         AssetManager as = getResources().getAssets();
         try {
-            InputStream input = as.open(fileName);
-            FileOutputStream output = openFileOutput(fileName, Context.MODE_PRIVATE);
-            int DEFAULT_BUFFER_SIZE = 1024 * 4;
-            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-            int n = 0;
-            while (-1 != (n = input.read(buffer))) {
-                output.write(buffer, 0, n);
+            ZipInputStream zis=new ZipInputStream(as.open(fileName+".zip"));
+            ZipEntry ze=zis.getNextEntry();
+
+            if (ze != null) {
+                String path = getFilesDir().toString() + "/" + ze.getName();
+                FileOutputStream fos = new FileOutputStream(path, false);
+                byte[] buf = new byte[1024];
+                int size = 0;
+
+                while ((size = zis.read(buf, 0, buf.length)) > -1) {
+                    fos.write(buf, 0, size);
+                }
+                fos.close();
+                zis.closeEntry();
             }
-            output.close();
-            input.close();
+            zis.close();
+
             ProcessBuilder builder = new ProcessBuilder("/system/bin/chmod", "744", cmd[0]);
             Process maxpro = builder.start();
             maxpro.waitFor();
@@ -99,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void maximacmd(String str) {
         try{
+            Log.d("maxima",cmd[0]);
             cmd[2]="--batch-string=display2d:false;"+str+";";
             ProcessBuilder builder = new ProcessBuilder(cmd);
             Process maxpro = builder.start();
