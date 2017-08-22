@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                            }
                            tv.setText(line.trim());
                            br.close();
-                       } catch (IOException | InterruptedException e) {
+                       } catch (Exception e) {
                            tv.setText("Error");
                        }
                    }
@@ -89,43 +89,49 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.button_equal).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
-                        cmd[2]="--batch-string=display2d:false;"+et.getText().toString()+";";
-                        ProcessBuilder builder = new ProcessBuilder("/system/bin/chmod","744",cmd[0]);
-                        Process maxpro = builder.start();
-                        maxpro.waitFor();
-                        builder=new ProcessBuilder(cmd);
-                        maxpro=builder.start();
-                        maxpro.waitFor();
-                        BufferedReader br = new BufferedReader(new InputStreamReader(maxpro.getInputStream()));
-                        String line="";
-                        for (int i = 0; i < 4; i++) {
-                            line = br.readLine();
-                            Log.d("maxima",line);
-                        }
-                        tv.setText(line.trim());
-                        br.close();
-                    } catch (IOException | InterruptedException e) {
-                        tv.setText("Error");
-                    }
+                        maximacmd(et.getText().toString());
                 }
             });
-        } catch (IOException e) {tv.setText("Error;");}
+        } catch (Exception e) {tv.setText("Error;");}
     }
 
-    private void copy2Local(String fileName) throws IOException {
+    private void copy2Local(String fileName) {
         // assetsから読み込み、出力する
         AssetManager as = getResources().getAssets();
-        InputStream input = as.open(fileName);
-        FileOutputStream output = openFileOutput(fileName, Context.MODE_PRIVATE);
-        int DEFAULT_BUFFER_SIZE = 1024 * 4;
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
+        try {
+            InputStream input = as.open(fileName);
+            FileOutputStream output = openFileOutput(fileName, Context.MODE_PRIVATE);
+            int DEFAULT_BUFFER_SIZE = 1024 * 4;
+            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+            int n = 0;
+            while (-1 != (n = input.read(buffer))) {
+                output.write(buffer, 0, n);
+            }
+            output.close();
+            input.close();
+            ProcessBuilder builder = new ProcessBuilder("/system/bin/chmod", "744", cmd[0]);
+            Process maxpro = builder.start();
+            maxpro.waitFor();
+        }catch(Exception e){tv.setText("Error");}
+    }
+
+    private void maximacmd(String str) {
+        try{
+            cmd[2]="--batch-string=display2d:false;"+str+";";
+            ProcessBuilder builder = new ProcessBuilder(cmd);
+            Process maxpro = builder.start();
+            maxpro.waitFor();
+            BufferedReader br = new BufferedReader(new InputStreamReader(maxpro.getInputStream()));
+            String line="";
+            for (int i = 0; i < 4; i++) {
+                line = br.readLine();
+                Log.d("maxima",line);
+            }
+            tv.setText(line.trim());
+            br.close();
+        } catch (IOException | InterruptedException e) {
+            tv.setText("Error");
         }
-        output.close();
-        input.close();
     }
 
     View.OnClickListener buttonNumberListener= new View.OnClickListener() {
