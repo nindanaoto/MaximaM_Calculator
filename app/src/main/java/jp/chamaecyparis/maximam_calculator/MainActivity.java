@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Button button=(Button) view;
-            et.append(button.getText());
+            et.getText().insert(et.getSelectionStart(),button.getText());
         }
     };
 
