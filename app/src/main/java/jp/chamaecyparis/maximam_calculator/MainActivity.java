@@ -83,10 +83,18 @@ public class MainActivity extends AppCompatActivity {
     private void copy2Local() {
         // assetsから読み込み、出力する
         String fileName="";
-        if(Build.CPU_ABI.equals("x86")||Build.CPU_ABI.equals("x86_64")){
-            fileName="maxima.x86.pie";
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.CPU_ABI.equals("x86")||Build.CPU_ABI.equals("x86_64")){
+                fileName = "maxima.x86";
+            }else{
+                fileName = "maxima";
+            }
         }else{
-            fileName="maxima.pie";
+            if(Build.SUPPORTED_ABIS[0].equals("x86")||Build.SUPPORTED_ABIS[0].equals("x86_64")){
+                fileName = "maxima.x86.pie";
+            }else{
+                fileName = "maxima.pie";
+            }
         }
         Log.d("copy",Build.CPU_ABI);
         Log.d("copy",fileName);
