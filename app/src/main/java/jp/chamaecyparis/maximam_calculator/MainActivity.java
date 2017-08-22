@@ -1,4 +1,4 @@
-package jp.bite.maximam_calculator;
+package jp.chamaecyparis.maximam_calculator;
 
 import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +20,7 @@ import java.io.FileOutputStream;
 public class MainActivity extends AppCompatActivity {
     TextView tv;
     EditText et;
-    final String[] cmd = {"/data/data/jp.bite.maximam_calculator/files/maxima.x86.pie","--very-quiet",""};
+    final String[] cmd = {"/data/data/jp.chamaecyparis.maximam_calculator/files/maxima.x86.pie","--very-quiet",""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
