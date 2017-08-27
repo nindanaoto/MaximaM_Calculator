@@ -33,71 +33,9 @@ public class MainActivity extends AppCompatActivity {
             tv = (TextView) findViewById(R.id.textView);
             et = (EditText) findViewById(R.id.editText);
             copy2Local();
+            buttoninit();
             tv.setText("Show result here.");
             et.setText("Type formula here.");
-
-            findViewById(R.id.button_1).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_2).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_3).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_4).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_5).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_6).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_7).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_8).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_9).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_0).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_dot).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_add).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_multiply).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_divide).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_subtract).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_Right_Parenthesis).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_Left_Parenthesis).setOnClickListener(buttonNumberListener);
-            findViewById(R.id.button_square).setOnClickListener(buttonNumberListener);
-
-            findViewById(R.id.button_sin).setOnClickListener(buttonNumberListenerParenthesis);
-            findViewById(R.id.button_cos).setOnClickListener(buttonNumberListenerParenthesis);
-            findViewById(R.id.button_tan).setOnClickListener(buttonNumberListenerParenthesis);
-            findViewById(R.id.button_ln).setOnClickListener(buttonNumberListenerParenthesis);
-            findViewById(R.id.button_sqrt).setOnClickListener(buttonNumberListenerParenthesis);
-
-            findViewById(R.id.button_v).setOnClickListener(new View.OnClickListener() {
-                   @Override
-                    public void onClick(View view){
-                       maximacmd("float("+tv.getText().toString()+")");
-                   }
-            }
-            );
-
-            findViewById(R.id.button_c).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    tv.setText("");
-                    et.setText("");
-
-                }
-            });
-
-            findViewById(R.id.button_equal).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                        maximacmd(et.getText().toString());
-                }
-            });
-
-            findViewById(R.id.button_left_cursor).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(et.getSelectionStart()!=0)et.setSelection(et.getSelectionStart()-1);
-                }
-            });
-
-            findViewById(R.id.button_right_coursor).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    et.setSelection(et.getSelectionStart()+1);
-                }
-            });
         } catch (Exception e) {tv.setText("Error;");}
     }
 
@@ -180,5 +118,78 @@ public class MainActivity extends AppCompatActivity {
             et.getText().insert(et.getSelectionStart(),button.getText()+"(");
         }
     };
+
+    private void buttoninit(){
+        findViewById(R.id.button_1).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_2).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_3).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_4).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_5).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_6).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_7).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_8).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_9).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_0).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_dot).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_add).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_multiply).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_divide).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_subtract).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_Right_Parenthesis).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_Left_Parenthesis).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_square).setOnClickListener(buttonNumberListener);
+
+        findViewById(R.id.button_sin).setOnClickListener(buttonNumberListenerParenthesis);
+        findViewById(R.id.button_cos).setOnClickListener(buttonNumberListenerParenthesis);
+        findViewById(R.id.button_tan).setOnClickListener(buttonNumberListenerParenthesis);
+        findViewById(R.id.button_ln).setOnClickListener(buttonNumberListenerParenthesis);
+        findViewById(R.id.button_sqrt).setOnClickListener(buttonNumberListenerParenthesis);
+
+        findViewById(R.id.button_v).setOnClickListener(new View.OnClickListener() {
+                                                           @Override
+                                                           public void onClick(View view){
+                                                               maximacmd("float("+tv.getText().toString()+")");
+                                                           }
+                                                       }
+        );
+
+        findViewById(R.id.button_c).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tv.setText("");
+                et.setText("");
+
+            }
+        });
+
+        findViewById(R.id.button_equal).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                maximacmd(et.getText().toString());
+            }
+        });
+
+        findViewById(R.id.button_left_cursor).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(et.getSelectionStart()!=0)et.setSelection(et.getSelectionStart()-1);
+            }
+        });
+
+        findViewById(R.id.button_right_coursor).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(et.getSelectionStart()!=et.getText().length())et.setSelection(et.getSelectionStart()+1);
+            }
+        });
+
+        findViewById(R.id.button_back_space).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(et.getSelectionStart()!=0)et.getText().delete(et.getSelectionStart()-1,et.getSelectionStart());
+            }
+        });
+
+    }
 
 }
