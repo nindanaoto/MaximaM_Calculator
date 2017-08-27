@@ -53,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.button_subtract).setOnClickListener(buttonNumberListener);
             findViewById(R.id.button_Right_Parenthesis).setOnClickListener(buttonNumberListener);
             findViewById(R.id.button_Left_Parenthesis).setOnClickListener(buttonNumberListener);
+            findViewById(R.id.button_square).setOnClickListener(buttonNumberListener);
+
+            findViewById(R.id.button_sin).setOnClickListener(buttonNumberListenerParenthesis);
+            findViewById(R.id.button_cos).setOnClickListener(buttonNumberListenerParenthesis);
+            findViewById(R.id.button_tan).setOnClickListener(buttonNumberListenerParenthesis);
+            findViewById(R.id.button_ln).setOnClickListener(buttonNumberListenerParenthesis);
+            findViewById(R.id.button_sqrt).setOnClickListener(buttonNumberListenerParenthesis);
 
             findViewById(R.id.button_v).setOnClickListener(new View.OnClickListener() {
                    @Override
@@ -75,6 +82,20 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                         maximacmd(et.getText().toString());
+                }
+            });
+
+            findViewById(R.id.button_left_cursor).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(et.getSelectionStart()!=0)et.setSelection(et.getSelectionStart()-1);
+                }
+            });
+
+            findViewById(R.id.button_right_coursor).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    et.setSelection(et.getSelectionStart()+1);
                 }
             });
         } catch (Exception e) {tv.setText("Error;");}
@@ -152,5 +173,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener buttonNumberListenerParenthesis= new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Button button=(Button) view;
+            et.getText().insert(et.getSelectionStart(),button.getText()+"(");
+        }
+    };
 
 }
