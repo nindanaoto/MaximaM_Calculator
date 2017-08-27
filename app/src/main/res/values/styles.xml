@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Button2" parent="@style/Widget.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>

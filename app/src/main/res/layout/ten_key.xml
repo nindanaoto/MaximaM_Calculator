@@ -10,6 +10,40 @@
         >
 
         <Button
+            android:id="@+id/button_ln"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="ln"
+            />
+
+        <Button
+            android:id="@+id/button_square"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="**"
+            />
+
+        <Button
+            android:id="@+id/button_sqrt"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="sqrt"
+            />
+
+        <Button
+            android:id="@+id/button_back_space"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bs"
+            />
+
+        <Button
             android:id="@+id/button_c"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
@@ -17,28 +51,55 @@
             android:text="c"
             />
 
+    </TableRow>
+
+    <TableRow
+        style="?attr/actionBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
         <Button
-            android:id="@+id/button_Left_Parenthesis"
+            android:id="@+id/button_sin"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="("
+            android:textAllCaps="false"
+            android:text="sin"
             />
 
         <Button
-            android:id="@+id/button_Right_Parenthesis"
+            android:id="@+id/button_cos"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=")"
+            android:textAllCaps="false"
+            android:text="cos"
             />
 
         <Button
-            android:id="@+id/button_v"
+            android:id="@+id/button_tan"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="v"
+            android:textAllCaps="false"
+            android:text="tan"
+            />
+
+        <Button
+            android:id="@+id/button_left_cursor"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="◀"
+            />
+
+        <Button
+            android:id="@+id/button_right_coursor"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="▶"
             />
 
     </TableRow>
@@ -74,12 +135,21 @@
             />
 
         <Button
-            android:id="@+id/button_divide"
+            android:id="@+id/button_Left_Parenthesis"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/"
+            android:text="("
             />
+
+        <Button
+            android:id="@+id/button_Right_Parenthesis"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=")"
+            />
+
 
     </TableRow>
 
@@ -121,6 +191,14 @@
             android:text="*"
             />
 
+        <Button
+            android:id="@+id/button_divide"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            />
+
     </TableRow>
 
     <TableRow
@@ -154,6 +232,14 @@
             />
 
         <Button
+            android:id="@+id/button_add"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            />
+
+        <Button
             android:id="@+id/button_subtract"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
@@ -169,13 +255,6 @@
         android:layout_height="wrap_content"
         >
 
-        <Button
-            android:id="@+id/button_dot"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="."
-            />
 
         <Button
             android:id="@+id/button_0"
@@ -186,6 +265,30 @@
             />
 
         <Button
+            android:id="@+id/button_dot"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."
+            />
+
+        <Button
+            android:id="@+id/button_v"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="v"
+            />
+
+        <Button
+            android:id="@+id/button_answer"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ans"
+            />
+
+        <Button
             android:id="@+id/button_equal"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
@@ -193,12 +296,6 @@
             android:text="="
             />
 
-        <Button
-            android:id="@+id/button_add"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            />
+
     </TableRow>
 </TableLayout>
