@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+
+import java.io.File;
+import java.io.OutputStreamWriter;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -23,7 +27,9 @@ import java.util.zip.ZipInputStream;
 public class MainActivity extends AppCompatActivity {
     TextView tv;
     EditText et;
-    final String[] cmd = {"","--very-quiet",""};
+    BufferedReader res;
+    BufferedWriter cmd;
+    boolean f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +38,18 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             tv = (TextView) findViewById(R.id.textView);
             et = (EditText) findViewById(R.id.editText);
-            copy2Local();
+            f=true;
+            maximainit();
             buttoninit();
             tv.setText("Show result here.");
             et.setText("Type formula here.");
         } catch (Exception e) {tv.setText("Error;");}
     }
 
-    private void copy2Local() {
+    private void maximainit() {
         // assetsから読み込み、出力する
         String fileName="";
+        String maxpath="";
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             if (Build.CPU_ABI.equals("x86")||Build.CPU_ABI.equals("x86_64")){
                 fileName = "maxima.x86";
@@ -55,50 +63,54 @@ public class MainActivity extends AppCompatActivity {
                 fileName = "maxima.pie";
             }
         }
-        Log.d("copy",Build.CPU_ABI);
-        Log.d("copy",fileName);
-        cmd[0]=getFilesDir().toString()+"/"+fileName;
         AssetManager as = getResources().getAssets();
+        maxpath=getFilesDir().toString()+"/"+fileName;
         try {
-            ZipInputStream zis=new ZipInputStream(as.open(fileName+".zip"));
-            ZipEntry ze=zis.getNextEntry();
+            if(!(new File(maxpath).exists())) {
+                Log.d("copy",fileName);
+                ZipInputStream zis = new ZipInputStream(as.open(fileName + ".zip"));
+                ZipEntry ze = zis.getNextEntry();
 
-            if (ze != null) {
-                String path = getFilesDir().toString() + "/" + ze.getName();
-                FileOutputStream fos = new FileOutputStream(path, false);
-                byte[] buf = new byte[1024];
-                int size = 0;
+                if (ze != null) {
+                    String path = getFilesDir().toString() + "/" + ze.getName();
+                    FileOutputStream fos = new FileOutputStream(path, false);
+                    byte[] buf = new byte[1024];
+                    int size = 0;
 
-                while ((size = zis.read(buf, 0, buf.length)) > -1) {
-                    fos.write(buf, 0, size);
+                    while ((size = zis.read(buf, 0, buf.length)) > -1) {
+                        fos.write(buf, 0, size);
+                    }
+                    fos.close();
+                    zis.closeEntry();
                 }
-                fos.close();
-                zis.closeEntry();
-            }
-            zis.close();
+                zis.close();
+            }else{Log.d("copy","File exist");}
 
-            ProcessBuilder builder = new ProcessBuilder("/system/bin/chmod", "744", cmd[0]);
+            Log.d("init","chmod start");
+            ProcessBuilder builder = new ProcessBuilder("/system/bin/chmod", "744",maxpath);
             Process maxpro = builder.start();
             maxpro.waitFor();
+            Log.d("init","chmod end");
+            builder=new ProcessBuilder(maxpath,"--very-quiet");
+            maxpro=builder.start();
+            Log.d("init","set");
+            cmd=new BufferedWriter(new OutputStreamWriter(maxpro.getOutputStream()));
+            res=new BufferedReader(new InputStreamReader(maxpro.getInputStream()));
+            Log.d("init","progress");
+            cmd.write("display2d:false;\n");
+            cmd.flush();
+            res.readLine();
+            Log.d("init","end");
         }catch(Exception e){tv.setText("Error");}
     }
 
     private void maximacmd(String str) {
         try{
-            Log.d("maxima",cmd[0]);
-            cmd[2]="--batch-string=display2d:false;"+str+";";
-            ProcessBuilder builder = new ProcessBuilder(cmd);
-            Process maxpro = builder.start();
-            maxpro.waitFor();
-            BufferedReader br = new BufferedReader(new InputStreamReader(maxpro.getInputStream()));
-            String line="";
-            for (int i = 0; i < 4; i++) {
-                line = br.readLine();
-                Log.d("maxima",line);
-            }
-            tv.setText(line.trim());
-            br.close();
-        } catch (IOException | InterruptedException e) {
+            cmd.write(str+";\n");
+            Log.d("maxima",str);
+            cmd.flush();
+            tv.setText(res.readLine());
+        } catch (Exception e) {
             tv.setText("Error");
         }
     }
@@ -106,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener buttonNumberListener= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(f){
+                f=false;tv.setText("");
+                et.setText("");
+            }
             Button button=(Button) view;
             et.getText().insert(et.getSelectionStart(),button.getText());
         }
@@ -114,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener buttonNumberListenerParenthesis= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(f){
+                f=false;tv.setText("");
+                et.setText("");
+            }
             Button button=(Button) view;
             et.getText().insert(et.getSelectionStart(),button.getText()+"(");
         }
