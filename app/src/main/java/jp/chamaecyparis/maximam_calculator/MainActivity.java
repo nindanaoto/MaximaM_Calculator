@@ -231,11 +231,13 @@ public class MainActivity extends AppCompatActivity {
                     ((Button)findViewById(R.id.button_cos)).setText("acos");
                     ((Button)findViewById(R.id.button_tan)).setText("atan");
                     ((Button)findViewById(R.id.button_v)).setText("prec");
+                    ((Button)findViewById(R.id.button_ln)).setText("exp");
                 }else{
                     ((Button)findViewById(R.id.button_sin)).setText("sin");
                     ((Button)findViewById(R.id.button_cos)).setText("cos");
                     ((Button)findViewById(R.id.button_tan)).setText("tan");
                     ((Button)findViewById(R.id.button_v)).setText("v");
+                    ((Button)findViewById(R.id.button_ln)).setText("ln");
                 }
             }
         });
