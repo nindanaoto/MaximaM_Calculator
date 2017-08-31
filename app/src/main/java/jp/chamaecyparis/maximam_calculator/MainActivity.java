@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     BufferedReader res;
     BufferedWriter cmd;
     boolean f;
+    boolean alt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             tv = (TextView) findViewById(R.id.textView);
             et = (EditText) findViewById(R.id.editText);
             f=true;
+            alt=false;
             maximainit();
             buttoninit();
             tv.setText("Show result here.");
@@ -106,13 +108,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void maximacmd(String str) {
         try{
-            cmd.write(str+";\n");
+            cmd.write(replacer(str)+";\n");
             Log.d("maxima",str);
             cmd.flush();
-            tv.setText(res.readLine());
+            tv.setText(res.readLine().replace("%pi","π"));
         } catch (Exception e) {
             tv.setText("Error");
         }
+    }
+
+    private String replacer(String str){
+        return str.replace("Ans","_").replace("^","**").replace("π","%pi");
     }
 
     View.OnClickListener buttonNumberListener= new View.OnClickListener() {
@@ -158,17 +164,23 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_Right_Parenthesis).setOnClickListener(buttonNumberListener);
         findViewById(R.id.button_Left_Parenthesis).setOnClickListener(buttonNumberListener);
         findViewById(R.id.button_square).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_answer).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_pi).setOnClickListener(buttonNumberListener);
+        findViewById(R.id.button_x).setOnClickListener(buttonNumberListener);
 
         findViewById(R.id.button_sin).setOnClickListener(buttonNumberListenerParenthesis);
         findViewById(R.id.button_cos).setOnClickListener(buttonNumberListenerParenthesis);
         findViewById(R.id.button_tan).setOnClickListener(buttonNumberListenerParenthesis);
         findViewById(R.id.button_ln).setOnClickListener(buttonNumberListenerParenthesis);
+        findViewById(R.id.button_log).setOnClickListener(buttonNumberListenerParenthesis);
+        findViewById(R.id.button_solve).setOnClickListener(buttonNumberListenerParenthesis);
         findViewById(R.id.button_sqrt).setOnClickListener(buttonNumberListenerParenthesis);
 
         findViewById(R.id.button_v).setOnClickListener(new View.OnClickListener() {
                                                            @Override
                                                            public void onClick(View view){
-                                                               maximacmd("float("+tv.getText().toString()+")");
+                                                               if(!alt)maximacmd("bfloat("+tv.getText().toString()+")");
+                                                               else maximacmd("fpprec:"+et.getText().toString());
                                                            }
                                                        }
         );
@@ -207,6 +219,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(et.getSelectionStart()!=0)et.getText().delete(et.getSelectionStart()-1,et.getSelectionStart());
+            }
+        });
+
+        findViewById(R.id.button_alt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alt=!alt;
+                if(alt){
+                    ((Button)findViewById(R.id.button_sin)).setText("asin");
+                    ((Button)findViewById(R.id.button_cos)).setText("acos");
+                    ((Button)findViewById(R.id.button_tan)).setText("atan");
+                    ((Button)findViewById(R.id.button_v)).setText("prec");
+                }else{
+                    ((Button)findViewById(R.id.button_sin)).setText("sin");
+                    ((Button)findViewById(R.id.button_cos)).setText("cos");
+                    ((Button)findViewById(R.id.button_tan)).setText("tan");
+                    ((Button)findViewById(R.id.button_v)).setText("v");
+                }
             }
         });
 
