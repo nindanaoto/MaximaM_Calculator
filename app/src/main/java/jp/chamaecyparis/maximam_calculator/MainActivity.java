@@ -5,11 +5,13 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Context;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
 import android.view.View;
 import android.util.Log;
+import android.os.Handler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +22,8 @@ import java.io.BufferedWriter;
 
 import java.io.File;
 import java.io.OutputStreamWriter;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -29,8 +33,13 @@ public class MainActivity extends AppCompatActivity {
     EditText et;
     BufferedReader res;
     BufferedWriter cmd;
-    boolean f;
-    boolean alt;
+    StringBuilder sb=new StringBuilder();
+    boolean f=true;
+    boolean alt=false;
+    boolean erace=false;
+
+    private Timer mTimer = null;
+    Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +48,35 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             tv = (TextView) findViewById(R.id.textView);
             et = (EditText) findViewById(R.id.editText);
-            f=true;
-            alt=false;
             maximainit();
             buttoninit();
             tv.setText("Show result here.");
             et.setText("Type formula here.");
+            mTimer=new Timer(true);
+            sb.append("Show result here.");
+            mTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (erace) {
+                                    sb.delete(0, sb.length());
+                                    erace=false;
+                                }
+                                if (res.ready()) {
+                                    sb.append(res.readLine());
+                                    Log.d("tv",new String(sb));
+                                }
+                                tv.setText(new String(sb).replace("%pi", "π"));
+                            }catch(Exception e){
+                                tv.setText("Error");
+                            }
+                        }
+                    });
+                }
+            },50,500);
         } catch (Exception e) {tv.setText("Error;");}
     }
 
@@ -111,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
             cmd.write(replacer(str)+";\n");
             Log.d("maxima",str);
             cmd.flush();
-            tv.setText(res.readLine().replace("%pi","π"));
         } catch (Exception e) {
             tv.setText("Error");
         }
@@ -125,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if(f){
-                f=false;tv.setText("");
+                f=false;
+                erace=true;
                 et.setText("");
             }
             Button button=(Button) view;
@@ -137,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if(f){
-                f=false;tv.setText("");
+                f=false;
+                erace=true;
                 et.setText("");
             }
             Button button=(Button) view;
@@ -188,9 +221,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_c).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv.setText("");
+                erace=true;
                 et.setText("");
-
             }
         });
 
