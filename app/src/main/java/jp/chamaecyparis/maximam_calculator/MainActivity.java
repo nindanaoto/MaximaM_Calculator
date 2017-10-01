@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_v).setOnClickListener(new View.OnClickListener() {
                                                            @Override
                                                            public void onClick(View view){
-                                                               if(!alt)maximacmd("bfloat("+tv.getText().toString()+")");
+                                                               if(!alt){erace=true;maximacmd("bfloat("+tv.getText().toString()+")");}
                                                                else maximacmd("fpprec:"+et.getText().toString());
                                                            }
                                                        }
@@ -264,12 +264,20 @@ public class MainActivity extends AppCompatActivity {
                     ((Button)findViewById(R.id.button_tan)).setText("atan");
                     ((Button)findViewById(R.id.button_v)).setText("prec");
                     ((Button)findViewById(R.id.button_ln)).setText("exp");
+                    ((Button)findViewById(R.id.button_x)).setText("t");
+                    ((Button)findViewById(R.id.button_solve)).setText("ode2");
+                    ((Button)findViewById(R.id.button_dot)).setText(",");
+                    ((Button)findViewById(R.id.button_log)).setText("diff");
                 }else{
                     ((Button)findViewById(R.id.button_sin)).setText("sin");
                     ((Button)findViewById(R.id.button_cos)).setText("cos");
                     ((Button)findViewById(R.id.button_tan)).setText("tan");
                     ((Button)findViewById(R.id.button_v)).setText("v");
                     ((Button)findViewById(R.id.button_ln)).setText("ln");
+                    ((Button)findViewById(R.id.button_x)).setText("x");
+                    ((Button)findViewById(R.id.button_solve)).setText("solve");
+                    ((Button)findViewById(R.id.button_dot)).setText(".");
+                    ((Button)findViewById(R.id.button_log)).setText("log");
                 }
             }
         });
